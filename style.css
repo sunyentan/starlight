@@ -1,0 +1,42 @@
+body {
+  margin: 0;
+  overflow: hidden;
+}
+
+canvas {
+  display: block;
+}
+
+#controlPanel {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.85);
+  padding: 10px;
+  border-radius: 4px;
+  font-family: Arial, sans-serif;
+  z-index: 10;
+}
+#controlPanel div {
+  margin-bottom: 10px;
+}
+#controlPanel label {
+  margin-right: 5px;
+}
+#controlPanel input[type=range],
+#controlPanel input[type=number] {
+  vertical-align: middle;
+  margin-right: 5px;
+}
+#controlPanel button {
+  margin-right: 5px;
+  padding: 5px 10px;
+  border: none;
+  background: #007bff;
+  color: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+}
+#controlPanel button:hover {
+  background: #0056b3;
+}

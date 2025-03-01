@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>3D Cellular Automaton</title>
+  <link rel="stylesheet" href="style.css">
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@v0.174.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@v0.174.0/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+<body>
+  <div id="controlPanel">
+    <div>
+      <label for="maxCellsRange">Max Cells:</label>
+      <input type="range" id="maxCellsRange" min="1000" max="20000" step="100" value="10000">
+      <input type="number" id="maxCellsNumber" min="1000" max="20000" step="100" value="10000">
+    </div>
+    <div>
+      <label for="pointSizeRange">Point Size:</label>
+      <input type="range" id="pointSizeRange" min="0.1" max="2.0" step="0.1" value="0.2">
+      <input type="number" id="pointSizeNumber" min="0.1" max="2.0" step="0.1" value="0.2">
+    </div>
+    <div>
+      <label for="stepSizeRange">Step Size:</label>
+      <input type="range" id="stepSizeRange" min="0.1" max="2.0" step="0.1" value="0.5">
+      <input type="number" id="stepSizeNumber" min="0.1" max="2.0" step="0.1" value="0.5">
+    </div>
+    <div>
+      <label for="cubeSizeRange">Cube Size:</label>
+      <input type="range" id="cubeSizeRange" min="10" max="50" step="1" value="20">
+      <input type="number" id="cubeSizeNumber" min="10" max="50" step="1" value="20">
+    </div>
+    <div>
+      <span>Point Shape:</span>
+      <button data-shape="circle">Circle</button>
+      <button data-shape="square">Square</button>
+      <button data-shape="triangle">Triangle</button>
+    </div>
+    <div>
+      <input type="checkbox" id="microscopicToggle">
+      <label for="microscopicToggle">Microscopic View Override</label>
+    </div>
+    <div>
+      <button id="resetButton">Reset Simulation</button>
+    </div>
+  </div>
+  <script type="module" src="main.js"></script>
+</body>
+</html>
