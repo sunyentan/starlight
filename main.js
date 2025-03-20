@@ -58,6 +58,16 @@ function initializeSimulation() {
   addCellToPoints(seed);
 }
 
+let generationHistory = [];
+function pushCurrentStateToHistory() {
+  generationHistory.push({
+    activeCells: JSON.parse(JSON.stringify(activeCells)),
+    allCells: JSON.parse(JSON.stringify(allCells)),
+    positions: positions.slice(),
+    colors: colors.slice()
+  });
+}
+
 initializeSimulation();
 
 let geometry = new THREE.BufferGeometry();
@@ -149,21 +159,12 @@ function updateCube(newSize) {
 
 let microscopicModeActive = false;
 
-function animate() {
-  requestAnimationFrame(animate);
+let simSpeed = 1.0;
+let isPaused = false;
+let baseStepInterval = 500;
+let lastUpdateTime = performance.now();
 
-  const timeFactor = performance.now() * 0.0001;
-  const newColors = [];
-  for (let i = 0; i < allCells.length; i++){
-    const cell = allCells[i];
-    let hue = (cell.generation * 0.05 + timeFactor) % 1;
-    const col = new THREE.Color().setHSL(hue, 1, 0.5);
-    newColors.push(col.r, col.g, col.b);
-  }
-  colors = newColors;
-  geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
-  geometry.attributes.color.needsUpdate = true;
-
+function simulateGenerationStep() {
   let newActiveCells = [];
   for (let cell of activeCells) {
     let direction = randomUnitVector();
@@ -192,9 +193,61 @@ function animate() {
   geometry.setDrawRange(0, positions.length / 3);
   geometry.attributes.position.needsUpdate = true;
   
-  if (allCells.length >= maxCells) {
-    activeCells = [];
+  pushCurrentStateToHistory();
+}
+
+function animate() {
+  requestAnimationFrame(animate);
+
+  const timeFactor = performance.now() * 0.0001;
+  const newColors = [];
+  for (let i = 0; i < allCells.length; i++){
+    const cell = allCells[i];
+    let hue = (cell.generation * 0.05 + timeFactor) % 1;
+    const col = new THREE.Color().setHSL(hue, 1, 0.5);
+    newColors.push(col.r, col.g, col.b);
   }
+  colors = newColors;
+  geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+  geometry.attributes.color.needsUpdate = true;
+
+  const currentTime = performance.now();
+  if (!isPaused && (currentTime - lastUpdateTime) >= (baseStepInterval / simSpeed)) {
+    simulateGenerationStep();
+    lastUpdateTime = currentTime;
+  }
+
+  // let newActiveCells = [];
+  // for (let cell of activeCells) {
+  //   let direction = randomUnitVector();
+  //   let newPos = cell.position.clone().add(direction.multiplyScalar(stepSize));
+  //   if (isInsideBox(newPos)) {
+  //     let newCell = { position: newPos, generation: cell.generation + 1 };
+  //     newActiveCells.push(newCell);
+  //     allCells.push(newCell);
+  //     positions.push(newCell.position.x, newCell.position.y, newCell.position.z);
+      
+  //     if (Math.random() < spawnExtraProbability) {
+  //       let extraDir = randomUnitVector();
+  //       let extraPos = cell.position.clone().add(extraDir.multiplyScalar(stepSize));
+  //       if (isInsideBox(extraPos)) {
+  //         let extraCell = { position: extraPos, generation: cell.generation + 1 };
+  //         newActiveCells.push(extraCell);
+  //         allCells.push(extraCell);
+  //         positions.push(extraCell.position.x, extraCell.position.y, extraCell.position.z);
+  //       }
+  //     }
+  //   }
+  // }
+  // activeCells = newActiveCells;
+  
+  // geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+  // geometry.setDrawRange(0, positions.length / 3);
+  // geometry.attributes.position.needsUpdate = true;
+  
+  // if (allCells.length >= maxCells) {
+  //   activeCells = [];
+  // }
 
   const microOverride = document.getElementById("microscopicToggle").checked;
   const cameraDistance = camera.position.length();
@@ -230,6 +283,46 @@ function resetSimulation() {
   geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
   geometry.setDrawRange(0, positions.length / 3);
 }
+
+const simSpeedRange = document.getElementById("simSpeedRange");
+const simSpeedNumber = document.getElementById("simSpeedNumber");
+simSpeedRange.addEventListener("input", function(e) {
+  simSpeed = parseFloat(e.target.value);
+  simSpeedNumber.value = e.target.value;
+});
+simSpeedNumber.addEventListener("input", function(e) {
+  simSpeed = parseFloat(e.target.value);
+  simSpeedRange.value = e.target.value;
+});
+
+const pausePlayButton = document.getElementById("pausePlayButton");
+pausePlayButton.addEventListener("click", function() {
+  isPaused = !isPaused;
+  pausePlayButton.textContent = isPaused ? "Play" : "Pause";
+});
+
+const nextFrameButton = document.getElementById("nextFrameButton");
+nextFrameButton.addEventListener("click", function() {
+  if (isPaused) {
+    simulateGenerationStep();
+  }
+});
+
+const prevFrameButton = document.getElementById("prevFrameButton");
+prevFrameButton.addEventListener("click", function() {
+  if (isPaused && generationHistory.length > 1) {
+    generationHistory.pop(); // Remove current generation
+    let prevSnapshot = generationHistory[generationHistory.length - 1];
+    activeCells = JSON.parse(JSON.stringify(prevSnapshot.activeCells));
+    allCells = JSON.parse(JSON.stringify(prevSnapshot.allCells));
+    positions = prevSnapshot.positions.slice();
+    colors = prevSnapshot.colors.slice();
+    
+    geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+    geometry.setDrawRange(0, positions.length / 3);
+    geometry.attributes.position.needsUpdate = true;
+  }
+});
 
 const maxCellsRange = document.getElementById("maxCellsRange");
 const maxCellsNumber = document.getElementById("maxCellsNumber");
