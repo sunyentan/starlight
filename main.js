@@ -29,8 +29,10 @@ scene.add(boxWireframe);
 let axesHelper = new THREE.AxesHelper(boxSize * 1.1);
 scene.add(axesHelper);
 
+// default values for control center
 let stepSize = 0.5;
 let maxCells = 10000;
+
 const spawnExtraProbability = 0.3;
 
 let activeCells = [];
@@ -47,6 +49,7 @@ function addCellToPoints(cell) {
   colors.push(color.r, color.g, color.b);
 }
 
+// data strucs to store data, [plants] the seed
 function initializeSimulation() {
   activeCells = [];
   allCells = [];
@@ -58,6 +61,7 @@ function initializeSimulation() {
   addCellToPoints(seed);
 }
 
+// array for history
 let generationHistory = [];
 function pushCurrentStateToHistory() {
   generationHistory.push({
@@ -75,6 +79,7 @@ geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3)
 geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
 geometry.setDrawRange(0, positions.length / 3);
 
+// changes textures based on shape
 function createPointTexture(shape) {
   const size = 64;
   const canvas = document.createElement('canvas');
@@ -114,6 +119,7 @@ function createPointTexture(shape) {
   return texture;
 }
 
+// default shape circle
 let currentShape = 'circle';
 const defaultTexture = createPointTexture(currentShape);
 const pointsMaterial = new THREE.PointsMaterial({
@@ -245,9 +251,9 @@ function animate() {
   // geometry.setDrawRange(0, positions.length / 3);
   // geometry.attributes.position.needsUpdate = true;
   
-  // if (allCells.length >= maxCells) {
-  //   activeCells = [];
-  // }
+  if (allCells.length >= maxCells) {
+    activeCells = [];
+  }
 
   const microOverride = document.getElementById("microscopicToggle").checked;
   const cameraDistance = camera.position.length();
