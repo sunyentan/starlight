@@ -30,7 +30,7 @@ let axesHelper = new THREE.AxesHelper(boxSize * 1.1);
 scene.add(axesHelper);
 
 // default values for control center
-let stepSize = 0.5;
+let stepSize = 1.5;
 let maxCells = 10000;
 
 const spawnExtraProbability = 0.3;
