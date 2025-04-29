@@ -427,3 +427,28 @@ simSpeedRange.addEventListener("input", function(e) {
 });
 
 updateInfoPanel();
+
+const hideInfoButton = document.getElementById("hideInfoButton");
+const hideControlButton = document.getElementById("hideControlButton");
+const infoPanel = document.getElementById("infoPanel");
+const controlPanel = document.getElementById("controlPanel");
+
+hideInfoButton.addEventListener("click", function() {
+  if (infoPanel.classList.contains("collapsed")) {
+    infoPanel.classList.remove("collapsed");
+    hideInfoButton.textContent = "Hide";
+  } else {
+    infoPanel.classList.add("collapsed");
+    hideInfoButton.textContent = "Show";
+  }
+});
+
+hideControlButton.addEventListener("click", function() {
+  if (controlPanel.classList.contains("collapsed")) {
+    controlPanel.classList.remove("collapsed");
+    hideControlButton.textContent = "Hide";
+  } else {
+    controlPanel.classList.add("collapsed");
+    hideControlButton.textContent = "Show";
+  }
+});
