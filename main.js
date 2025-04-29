@@ -317,7 +317,7 @@ nextFrameButton.addEventListener("click", function() {
 const prevFrameButton = document.getElementById("prevFrameButton");
 prevFrameButton.addEventListener("click", function() {
   if (isPaused && generationHistory.length > 1) {
-    generationHistory.pop(); // Remove current generation
+    generationHistory.pop();
     let prevSnapshot = generationHistory[generationHistory.length - 1];
     activeCells = JSON.parse(JSON.stringify(prevSnapshot.activeCells));
     allCells = JSON.parse(JSON.stringify(prevSnapshot.allCells));
@@ -427,23 +427,23 @@ simSpeedRange.addEventListener("input", function(e) {
 });
 
 updateInfoPanel();
+
 const hideInfoButton = document.getElementById("hideInfoButton");
 const showInfoButton = document.getElementById("showInfoButton");
 const infoPanel = document.getElementById("infoPanel");
+const hideControlButton = document.getElementById("hideControlButton");
+const showControlButton = document.getElementById("showControlButton");
+const controlPanel = document.getElementById("controlPanel");
 
 hideInfoButton.addEventListener("click", function() {
   infoPanel.classList.add("collapsed");
-  showInfoButton.style.display = "block"; // Show the small floating button
+  showInfoButton.style.display = "block";
 });
 
 showInfoButton.addEventListener("click", function() {
   infoPanel.classList.remove("collapsed");
-  showInfoButton.style.display = "none"; // Hide floating button
+  showInfoButton.style.display = "none";
 });
-
-const hideControlButton = document.getElementById("hideControlButton");
-const showControlButton = document.getElementById("showControlButton");
-const controlPanel = document.getElementById("controlPanel");
 
 hideControlButton.addEventListener("click", function() {
   controlPanel.classList.add("collapsed");

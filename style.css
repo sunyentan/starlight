@@ -20,6 +20,8 @@ canvas {
   color: #222;
   z-index: 10;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: transform 0.5s ease, opacity 0.5s ease;
+  z-index: 10;
 }
 
 #controlPanel div {
@@ -63,6 +65,8 @@ canvas {
   color: #222;
   z-index: 10;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: transform 0.5s ease, opacity 0.5s ease;
+  z-index: 10;
 }
 
 #infoPanel h2 {
@@ -129,6 +133,11 @@ canvas {
 
 #showInfoButton {
   left: 20px;
+  background-color: #ff6666;
+}
+
+#showInfoButton:hover {
+  background-color: #cc4444;
 }
 
 #showControlButton {
