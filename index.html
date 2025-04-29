@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>3D Cellular Automaton</title>
@@ -13,7 +14,33 @@
     }
   </script>
 </head>
+
 <body>
+  <div id="infoPanel">
+    <h2>Starlight - 3D Cellular Automata</h2>
+    <p><strong>Project by:</strong> Sun-Yen Tan</p>
+    <p><strong>Inspired by:</strong> Stellar Evolution and Theory of Computation</p>
+
+    <hr>
+
+    <h3>Current Parameters:</h3>
+    <ul>
+      <li><strong>Max Cells:</strong> <span id="infoMaxCells">10000</span></li>
+      <li><strong>Step Size:</strong> <span id="infoStepSize">0.5</span></li>
+      <li><strong>Cube Size:</strong> <span id="infoCubeSize">20</span></li>
+      <li><strong>Sim Speed:</strong> <span id="infoSimSpeed">1.0x</span></li>
+    </ul>
+
+    <hr>
+
+    <h3>Quick Tips:</h3>
+    <ul>
+      <li>Use the right panel to adjust simulation parameters.</li>
+      <li>Pause to explore individual generations.</li>
+      <li>Zoom in to activate microscopic view mode.</li>
+      <li>Click "Next" and "Prev" to step through generations manually.</li>
+    </ul>
+  </div>
   <div id="controlPanel">
     <div>
       <label for="maxCellsRange">Max Cells:</label>
@@ -61,4 +88,5 @@
   </div>
   <script type="module" src="main.js"></script>
 </body>
+
 </html>

@@ -40,3 +40,37 @@ canvas {
 #controlPanel button:hover {
   background: #0056b3;
 }
+
+#infoPanel {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  width: 280px;
+  background: rgba(255, 255, 255, 0.88);
+  padding: 15px 20px;
+  border-radius: 8px;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  color: #222;
+  z-index: 10;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+#infoPanel h2 {
+  margin-top: 0;
+  font-size: 18px;
+}
+
+#infoPanel h3 {
+  margin-top: 15px;
+  font-size: 16px;
+}
+
+#infoPanel ul {
+  padding-left: 18px;
+  margin-top: 8px;
+}
+
+#infoPanel ul li {
+  margin-bottom: 5px;
+}

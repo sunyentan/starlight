@@ -396,3 +396,34 @@ window.addEventListener('resize', () => {
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
 });
+
+function updateInfoPanel() {
+  document.getElementById("infoMaxCells").textContent = maxCells;
+  document.getElementById("infoStepSize").textContent = stepSize.toFixed(2);
+  document.getElementById("infoCubeSize").textContent = boxSize.toFixed(1);
+  document.getElementById("infoSimSpeed").textContent = simSpeed.toFixed(1) + 'x';
+}
+
+maxCellsRange.addEventListener("input", function(e) {
+  maxCells = parseInt(e.target.value);
+  maxCellsNumber.value = e.target.value;
+  updateInfoPanel();
+});
+stepSizeRange.addEventListener("input", function(e) {
+  stepSize = parseFloat(e.target.value);
+  stepSizeNumber.value = e.target.value;
+  updateInfoPanel();
+});
+cubeSizeRange.addEventListener("input", function(e) {
+  const newCubeSize = parseFloat(e.target.value);
+  cubeSizeNumber.value = e.target.value;
+  updateCube(newCubeSize);
+  updateInfoPanel();
+});
+simSpeedRange.addEventListener("input", function(e) {
+  simSpeed = parseFloat(e.target.value);
+  simSpeedNumber.value = e.target.value;
+  updateInfoPanel();
+});
+
+updateInfoPanel();
