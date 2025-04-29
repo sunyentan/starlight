@@ -42,8 +42,10 @@
       <li>Click "Next" and "Prev" to step through generations manually.</li>
     </ul>
   </div>
+  <button id="showInfoButton" class="showButton">Show Info</button>
+
   <div id="controlPanel">
-    <button id="hideInfoButton" class="hideButton">Hide</button>
+    <button id="hideControlButton" class="hideButton">Hide</button>
     <div>
       <label for="maxCellsRange">Max Cells:</label>
       <input type="range" id="maxCellsRange" min="1000" max="20000" step="100" value="10000">
@@ -88,6 +90,8 @@
       <button id="resetButton">Reset Simulation</button>
     </div>
   </div>
+  <button id="showControlButton" class="showButton">Show Controls</button>
+  
   <script type="module" src="main.js"></script>
 </body>
 
