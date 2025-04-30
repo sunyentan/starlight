@@ -7,6 +7,21 @@ canvas {
   display: block;
 }
 
+#controlPanel #resetButton {
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#controlPanel #resetButton:hover {
+  background-color: #cc0000;
+}
+
 #controlPanel {
   position: fixed;
   top: 20px;

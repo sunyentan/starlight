@@ -454,3 +454,29 @@ showControlButton.addEventListener("click", function() {
   controlPanel.classList.remove("collapsed");
   showControlButton.style.display = "none";
 });
+
+const cubeToggle = document.getElementById("toggleCubeVisibility");
+boxWireframe.visible = cubeToggle.checked;
+cubeToggle.addEventListener("change", (e) => {
+  boxWireframe.visible = e.target.checked;
+});
+
+const uniformToggle = document.getElementById("toggleUniformColor");
+pointsMaterial.vertexColors = true;
+pointsMaterial.color.set(0xffffff);
+uniformToggle.addEventListener("change", (e) => {
+  const useUniform = e.target.checked;
+  pointsMaterial.vertexColors = !useUniform;
+  if (useUniform) {
+    pointsMaterial.color.set(0xffffff);
+  }
+  pointsMaterial.needsUpdate = true;
+});
+
+boxWireframe.visible = axesHelper.visible = cubeToggle.checked;
+
+cubeToggle.addEventListener("change", (e) => {
+  const show = e.target.checked;
+  boxWireframe.visible = show;
+  axesHelper.visible   = show;
+});
