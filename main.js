@@ -259,16 +259,43 @@ function animate() {
   const cameraDistance = camera.position.length();
   const microThreshold = 10;
   
-  if (microOverride || cameraDistance < microThreshold) {
-    if (!microscopicModeActive) {
-      pointsMaterial.map = createPointTexture('spark');
+  // if (microOverride || cameraDistance < microThreshold) {
+  //   if (!microscopicModeActive) {
+  //     pointsMaterial.map = createPointTexture('spark');
+  //     pointsMaterial.size = parseFloat(document.getElementById("pointSizeRange").value) * 0.5;
+  //     pointsMaterial.needsUpdate = true;
+  //     microscopicModeActive = true;
+  //   }
+  // } else {
+  //   if (microscopicModeActive) {
+  //     pointsMaterial.map = createPointTexture(currentShape);
+  //     pointsMaterial.size = parseFloat(document.getElementById("pointSizeRange").value);
+  //     pointsMaterial.needsUpdate = true;
+  //     microscopicModeActive = false;
+  //   }
+  // }
+
+  if (microOverride) {
+      if (!microscopicModeActive) {
+      pointsMaterial.map  = createPointTexture('spark');
       pointsMaterial.size = parseFloat(document.getElementById("pointSizeRange").value) * 0.5;
       pointsMaterial.needsUpdate = true;
       microscopicModeActive = true;
     }
-  } else {
+  
+    const timeFactor = performance.now() * 0.0001;
+    const newColors = [];
+    for (let i = 0; i < allCells.length; i++) {
+      const cell = allCells[i];
+      let hue = (cell.generation * 0.05 + timeFactor) % 1;
+      const col = new THREE.Color().setHSL(hue, 1, 0.5);
+      newColors.push(col.r, col.g, col.b);
+    }
+    geometry.setAttribute('color', new THREE.Float32BufferAttribute(newColors, 3));
+    geometry.attributes.color.needsUpdate = true;
+  } else {  
     if (microscopicModeActive) {
-      pointsMaterial.map = createPointTexture(currentShape);
+      pointsMaterial.map  = createPointTexture(currentShape);
       pointsMaterial.size = parseFloat(document.getElementById("pointSizeRange").value);
       pointsMaterial.needsUpdate = true;
       microscopicModeActive = false;
