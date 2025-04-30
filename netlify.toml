@@ -1,0 +1,12 @@
+[build]
+  functions = "netlify/functions"
+  publish = "."
+
+[dev]
+  functions = "netlify/functions"
+  publish = "."
+
+[[redirects]]
+  from = "/analyze-star"
+  to = "/.netlify/functions/analyze-star"
+  status = 200

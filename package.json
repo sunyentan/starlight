@@ -7,5 +7,15 @@
   },
   "devDependencies": {
     "concurrently": "^9.1.2"
-  }
+  },
+  "name": "3d-cellular-automata",
+  "version": "1.0.0",
+  "description": "A visual and interactive 3D cellular automaton built with [Three.js](https://threejs.org/), inspired by the birth of stars in space and concepts from the theory of computing. This project was created as an extra credit project for a computing theory class, [CSE355 @ ASU](https://catalog.apps.asu.edu/catalog/courses/courselist?subject=CSE&catalogNbr=355&term=2251&collapse=N)) and explores how simple rules can lead to complex emergent behavior.",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }

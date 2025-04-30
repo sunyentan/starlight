@@ -602,7 +602,7 @@ analyzeButton.addEventListener("click", async () => {
   const base64Image = dataUrl.split(",")[1];
 
   try {
-    const res = await fetch("http://localhost:3000/analyze-star", {
+    const res = await fetch("/analyze-star", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ image: base64Image })
