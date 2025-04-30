@@ -13,9 +13,18 @@
       }
     }
   </script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 
 <body>
+  <div id="analysisModal" class="modal hidden">
+    <div class="modal-content">
+      <button id="closeModalButton" class="close-button">&times;</button>
+      <h2>🪐 Star Analysis Report</h2>
+      <img id="analysisStarImage" src="" alt="Star Render" class="analysis-image">
+      <pre id="analysisText"></pre>
+    </div>
+  </div>
   <div id="infoPanel">
     <button id="hideInfoButton" class="hideButton">Hide</button>
     <h2>Starlight</h2>
@@ -86,7 +95,7 @@
       <label for="toggleCube">Show Cube</label>
     </div>
     <div>
-      <input type="checkbox" id="toggleUniformColor" checked>
+      <input type="checkbox" id="toggleUniformColor" >
       <label for="toggleColorful">Uniform Point Color</label>
     </div>
     <div>
@@ -101,6 +110,17 @@
     </div>
     <div>
       <button id="resetButton">Reset Simulation</button>
+    </div>
+    <hr>
+    <div class="instruction">
+      <p>
+        ⚠️ <strong>Tip:</strong> You must generate at least <strong>10 generations</strong> before using 
+        <em>Analyze Star</em>. Once enabled, click the button to send your current star image 
+        to OpenAI for a “star type” guess & fun horoscope!
+      </p>
+    </div>
+    <div class="toggle">
+      <button id="analyzeButton" disabled>Analyze Star</button>
     </div>
   </div>
   <button id="showControlButton" class="showButton">Show Controls</button>

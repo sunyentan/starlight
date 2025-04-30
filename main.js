@@ -76,6 +76,9 @@ const pointsChart = new Chart(ctx, {
   }
 });
 
+const analyzeButton     = document.getElementById("analyzeButton");
+const analysisResultDiv = document.getElementById("analysisResult");
+
 function updateChart(generation, count) {
   chartLabels.push(generation);
   chartData.push(count);
@@ -116,6 +119,7 @@ function pushCurrentStateToHistory() {
 initializeSimulation();
 pushCurrentStateToHistory();
 updatePointCount();
+updateAnalyzeButton();
 
 let geometry = new THREE.BufferGeometry();
 geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
@@ -244,6 +248,7 @@ function simulateGenerationStep() {
   
   pushCurrentStateToHistory();
   updatePointCount();
+  updateAnalyzeButton();
   updateChart(generationHistory.length - 1, allCells.length);
 }
 
@@ -266,6 +271,7 @@ function animate() {
   if (!isPaused && (currentTime - lastUpdateTime) >= (baseStepInterval / simSpeed)) {
     simulateGenerationStep();
     updatePointCount();
+    updateAnalyzeButton();
     lastUpdateTime = currentTime;
   }
 
@@ -363,6 +369,7 @@ function resetSimulation() {
   geometry.setDrawRange(0, positions.length / 3);
 
   updatePointCount();
+  updateAnalyzeButton();
   chartLabels.length = 0;
   chartData.length   = 0;
   pointsChart.update();
@@ -390,6 +397,7 @@ nextFrameButton.addEventListener("click", function() {
   if (isPaused) {
     simulateGenerationStep();
     updatePointCount();
+    updateAnalyzeButton();
   }
 });
 
@@ -408,6 +416,7 @@ prevFrameButton.addEventListener("click", function() {
     geometry.attributes.position.needsUpdate = true;
 
     updatePointCount();
+    updateAnalyzeButton();
   }
 });
 
@@ -473,6 +482,7 @@ shapeButtons.forEach(button => {
 document.getElementById("resetButton").addEventListener("click", () => {
   resetSimulation();
   updatePointCount();
+  updateAnalyzeButton();
 });
 window.addEventListener('resize', () => {
   camera.aspect = window.innerWidth / window.innerHeight;
@@ -568,3 +578,47 @@ function updatePointCount() {
   const count = allCells.length;
   document.getElementById("infoPointCount").textContent = count;
 }
+
+function updateAnalyzeButton() {
+  analyzeButton.disabled = generationHistory.length < 10;
+}
+
+analyzeButton.addEventListener("click", async () => {
+  analysisText.innerHTML = "<p>Analyzing your star…</p>";
+  analysisModal.classList.remove("hidden");
+
+  const starImages = [
+    "stars/star1.png",
+    "stars/star2.jpg",
+    "stars/star3.jpg",
+    "stars/star4.jpg",
+    "stars/star5.jpg"
+  ];
+  const analysisImage = document.getElementById("analysisStarImage");
+  const randomIndex = Math.floor(Math.random() * starImages.length);
+  analysisImage.src = starImages[randomIndex];
+
+  const dataUrl = renderer.domElement.toDataURL("image/png");
+  const base64Image = dataUrl.split(",")[1];
+
+  try {
+    const res = await fetch("http://localhost:3000/analyze-star", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ image: base64Image })
+    });
+
+    const { reply } = await res.json();
+    analysisText.innerHTML = marked.parse(reply);
+  } catch (err) {
+    console.error(err);
+    analysisText.innerHTML = "<p>⚠️ Something went wrong. Try again later.</p>";
+  }
+  setTimeout(() => {
+    analysisImage.classList.add("show");
+  }, 5000);
+});
+
+closeModalButton.addEventListener("click", () => {
+  analysisModal.classList.add("hidden");
+});
