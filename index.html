@@ -42,6 +42,10 @@
       <li>Zoom in to activate microscopic view mode.</li>
       <li>Click "Next" and "Prev" to step through generations manually.</li>
     </ul>
+    <li><strong>Points:</strong> <span id="infoPointCount">0</span></li>
+    <li>
+      <canvas id="pointsChart" width="280" height="150"></canvas>
+    </li>
   </div>
   <button id="showInfoButton" class="showButton">Show Info</button>
 
@@ -102,6 +106,7 @@
   <button id="showControlButton" class="showButton">Show Controls</button>
 
   <script type="module" src="main.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </body>
 
 </html>

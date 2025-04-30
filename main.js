@@ -41,6 +41,47 @@ let allCells = [];
 let positions = [];
 let colors = [];
 
+const chartLabels = [];
+const chartData   = [];
+
+const ctx = document.getElementById("pointsChart").getContext("2d");
+
+const pointsChart = new Chart(ctx, {
+  type: "line",
+  data: {
+    labels: chartLabels,
+    datasets: [{
+      label: "Points Over Generations",
+      data: chartData,
+      borderColor: "#007bff",
+      borderWidth: 2,
+      fill: false,
+      pointRadius: 2,
+      tension: 0.2
+    }]
+  },
+  options: {
+    scales: {
+      x: {
+        title: { display: true, text: "Generation" },
+        ticks: { autoSkip: true, maxTicksLimit: 10 }
+      },
+      y: {
+        title: { display: true, text: "Point Count" }
+      }
+    },
+    plugins: {
+      legend: { display: false }
+    }
+  }
+});
+
+function updateChart(generation, count) {
+  chartLabels.push(generation);
+  chartData.push(count);
+  pointsChart.update();
+}
+
 function addCellToPoints(cell) {
   positions.push(cell.position.x, cell.position.y, cell.position.z);
   const hue = (cell.generation * 0.05) % 1;
@@ -73,6 +114,8 @@ function pushCurrentStateToHistory() {
 }
 
 initializeSimulation();
+pushCurrentStateToHistory();
+updatePointCount();
 
 let geometry = new THREE.BufferGeometry();
 geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
@@ -201,6 +244,7 @@ function simulateGenerationStep() {
   
   pushCurrentStateToHistory();
   updatePointCount();
+  updateChart(generationHistory.length - 1, allCells.length);
 }
 
 function animate() {
@@ -317,6 +361,11 @@ function resetSimulation() {
   }
   geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
   geometry.setDrawRange(0, positions.length / 3);
+
+  updatePointCount();
+  chartLabels.length = 0;
+  chartData.length   = 0;
+  pointsChart.update();
 }
 
 const simSpeedRange = document.getElementById("simSpeedRange");
