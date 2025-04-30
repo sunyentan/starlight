@@ -200,6 +200,7 @@ function simulateGenerationStep() {
   geometry.attributes.position.needsUpdate = true;
   
   pushCurrentStateToHistory();
+  updatePointCount();
 }
 
 function animate() {
@@ -220,6 +221,7 @@ function animate() {
   const currentTime = performance.now();
   if (!isPaused && (currentTime - lastUpdateTime) >= (baseStepInterval / simSpeed)) {
     simulateGenerationStep();
+    updatePointCount();
     lastUpdateTime = currentTime;
   }
 
@@ -338,6 +340,7 @@ const nextFrameButton = document.getElementById("nextFrameButton");
 nextFrameButton.addEventListener("click", function() {
   if (isPaused) {
     simulateGenerationStep();
+    updatePointCount();
   }
 });
 
@@ -354,6 +357,8 @@ prevFrameButton.addEventListener("click", function() {
     geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
     geometry.setDrawRange(0, positions.length / 3);
     geometry.attributes.position.needsUpdate = true;
+
+    updatePointCount();
   }
 });
 
@@ -416,8 +421,10 @@ shapeButtons.forEach(button => {
   });
 });
 
-document.getElementById("resetButton").addEventListener("click", resetSimulation);
-
+document.getElementById("resetButton").addEventListener("click", () => {
+  resetSimulation();
+  updatePointCount();
+});
 window.addEventListener('resize', () => {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
@@ -507,3 +514,8 @@ cubeToggle.addEventListener("change", (e) => {
   boxWireframe.visible = show;
   axesHelper.visible   = show;
 });
+
+function updatePointCount() {
+  const count = allCells.length;
+  document.getElementById("infoPointCount").textContent = count;
+}
