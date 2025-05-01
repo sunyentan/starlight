@@ -31,14 +31,14 @@ Use the following structured format in your response:
 
 **🌟 Star Classification:** [Give the type of star this resembles — e.g. nebula, binary system, dwarf star, shooting star, etc.]
 
-**📖 Summary:** Provide a 2–3 sentence poetic description of what this star looks like, using cosmic metaphors.
+**📖 Summary:** Provide a sentence poetic description of what this star looks like, using cosmic metaphors.
 
 **🪐 Horoscope Insight:**
-- **General Vibe:** Describe the overall energy/personality this star emits.
+- **General Vibe:** Describe the overall energy/personality this star emits in once sentence.
 - **Keywords:** List 4–6 keywords that describe this star’s personality.
-- **Traits & Interpretations:** Give 3–4 bulleted traits, each with a short explanation.
+- **Traits & Interpretations:** Give 2-3 bulleted traits, no need for explanations.
 
-**💡 Fun Fact:** End with a one-sentence quirky or cosmic insight about this type of star.
+**💡 Prediction about you:** End it off with a positive note: STRICTLY: "You will get a {GRADE / 100} for your coming CSE 355 final!" where GRADE is between 95 and 100.
 
 ---
 
