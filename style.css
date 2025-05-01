@@ -267,17 +267,11 @@ canvas {
   color: #444;
 }
 
-.analysis-image {
-  display: none;
+.analysis-generated-image {
+  display: block;
   max-width: 100%;
-  width: 100%;
-  max-height: 280px;
-  object-fit: contain;
-  border-radius: 10px;
-  margin-bottom: 20px;
-  border: 1px solid #ccc;
+  margin-top: 20px;
+  border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
-.analysis-image.show {
-  display: block;
-}
+.hidden { display: none; }
