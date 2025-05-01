@@ -49,19 +49,10 @@ Remember: be vivid, imaginative, and format your response in clear markdown-styl
         }
       ]
     });
-    const reply = chat.choices[0].message.content;
-
-    let starType = reply.match(/^\*\*🌟 Star Classification:\*\* (.+)$/m)?.[1] || "mystical star";
-    const imgRes = await openai.images.generate({
-      prompt: `Create a high-resolution, artistic cosmic illustration of a ${starType}. Style: watercolor meets space, glowing nebulous edges.`,
-      n: 1,
-      size: "512x512"
-    });
-    const generatedUrl = imgRes.data[0].url;
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ reply, generatedImage: generatedUrl })
+      body: JSON.stringify({ reply: chat.choices[0].message.content })
     };
   } catch (err) {
     console.error("OpenAI error:", err);
