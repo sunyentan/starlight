@@ -589,7 +589,6 @@ function updateAnalyzeButton() {
 }
 analyzeButton.addEventListener("click", async () => {
   analysisText.innerHTML = "Analyzing your star…";
-  analysisImage.classList.remove("show");
   generatedImage.classList.add("hidden");
   analysisModal.classList.remove("hidden");
 
