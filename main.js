@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x222222); 
+scene.background = new THREE.Color(0x222222);
 
 const camera = new THREE.PerspectiveCamera(
   75,
@@ -42,7 +42,7 @@ let positions = [];
 let colors = [];
 
 const chartLabels = [];
-const chartData   = [];
+const chartData = [];
 
 const ctx = document.getElementById("pointsChart").getContext("2d");
 
@@ -76,7 +76,7 @@ const pointsChart = new Chart(ctx, {
   }
 });
 
-const analyzeButton     = document.getElementById("analyzeButton");
+const analyzeButton = document.getElementById("analyzeButton");
 const analysisResultDiv = document.getElementById("analysisResult");
 
 function updateChart(generation, count) {
@@ -134,9 +134,9 @@ function createPointTexture(shape) {
   canvas.height = size;
   const ctx = canvas.getContext('2d');
   ctx.clearRect(0, 0, size, size);
-  
+
   if (shape === 'spark') {
-    const gradient = ctx.createRadialGradient(size/2, size/2, 2, size/2, size/2, size/2);
+    const gradient = ctx.createRadialGradient(size / 2, size / 2, 2, size / 2, size / 2, size / 2);
     gradient.addColorStop(0, 'white');
     gradient.addColorStop(0.5, 'yellow');
     gradient.addColorStop(1, 'rgba(255,255,255,0)');
@@ -160,7 +160,7 @@ function createPointTexture(shape) {
     ctx.closePath();
     ctx.fill();
   }
-  
+
   const texture = new THREE.CanvasTexture(canvas);
   texture.needsUpdate = true;
   return texture;
@@ -204,7 +204,7 @@ function updateCube(newSize) {
   let newBoxGeometry = new THREE.BoxGeometry(boxSize, boxSize, boxSize);
   let newEdges = new THREE.EdgesGeometry(newBoxGeometry);
   boxWireframe.geometry = newEdges;
-  
+
   scene.remove(axesHelper);
   axesHelper = new THREE.AxesHelper(boxSize * 1.1);
   scene.add(axesHelper);
@@ -227,7 +227,7 @@ function simulateGenerationStep() {
       newActiveCells.push(newCell);
       allCells.push(newCell);
       positions.push(newCell.position.x, newCell.position.y, newCell.position.z);
-      
+
       if (Math.random() < spawnExtraProbability) {
         let extraDir = randomUnitVector();
         let extraPos = cell.position.clone().add(extraDir.multiplyScalar(stepSize));
@@ -241,11 +241,11 @@ function simulateGenerationStep() {
     }
   }
   activeCells = newActiveCells;
-  
+
   geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
   geometry.setDrawRange(0, positions.length / 3);
   geometry.attributes.position.needsUpdate = true;
-  
+
   pushCurrentStateToHistory();
   updatePointCount();
   updateAnalyzeButton();
@@ -257,7 +257,7 @@ function animate() {
 
   const timeFactor = performance.now() * 0.0001;
   const newColors = [];
-  for (let i = 0; i < allCells.length; i++){
+  for (let i = 0; i < allCells.length; i++) {
     const cell = allCells[i];
     let hue = (cell.generation * 0.05 + timeFactor) % 1;
     const col = new THREE.Color().setHSL(hue, 1, 0.5);
@@ -284,7 +284,7 @@ function animate() {
   //     newActiveCells.push(newCell);
   //     allCells.push(newCell);
   //     positions.push(newCell.position.x, newCell.position.y, newCell.position.z);
-      
+
   //     if (Math.random() < spawnExtraProbability) {
   //       let extraDir = randomUnitVector();
   //       let extraPos = cell.position.clone().add(extraDir.multiplyScalar(stepSize));
@@ -298,11 +298,11 @@ function animate() {
   //   }
   // }
   // activeCells = newActiveCells;
-  
+
   // geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
   // geometry.setDrawRange(0, positions.length / 3);
   // geometry.attributes.position.needsUpdate = true;
-  
+
   if (allCells.length >= maxCells) {
     activeCells = [];
   }
@@ -310,7 +310,12 @@ function animate() {
   const microOverride = document.getElementById("microscopicToggle").checked;
   const cameraDistance = camera.position.length();
   const microThreshold = 10;
-  
+
+  const analysisImage = document.getElementById("analysisStarImage");
+  const generatedImage = document.getElementById("generatedImage");
+  const analysisText = document.getElementById("analysisText");
+
+
   // if (microOverride || cameraDistance < microThreshold) {
   //   if (!microscopicModeActive) {
   //     pointsMaterial.map = createPointTexture('spark');
@@ -328,13 +333,13 @@ function animate() {
   // }
 
   if (microOverride) {
-      if (!microscopicModeActive) {
-      pointsMaterial.map  = createPointTexture('spark');
+    if (!microscopicModeActive) {
+      pointsMaterial.map = createPointTexture('spark');
       pointsMaterial.size = parseFloat(document.getElementById("pointSizeRange").value) * 0.5;
       pointsMaterial.needsUpdate = true;
       microscopicModeActive = true;
     }
-  
+
     const timeFactor = performance.now() * 0.0001;
     const newColors = [];
     for (let i = 0; i < allCells.length; i++) {
@@ -345,9 +350,9 @@ function animate() {
     }
     geometry.setAttribute('color', new THREE.Float32BufferAttribute(newColors, 3));
     geometry.attributes.color.needsUpdate = true;
-  } else {  
+  } else {
     if (microscopicModeActive) {
-      pointsMaterial.map  = createPointTexture(currentShape);
+      pointsMaterial.map = createPointTexture(currentShape);
       pointsMaterial.size = parseFloat(document.getElementById("pointSizeRange").value);
       pointsMaterial.needsUpdate = true;
       microscopicModeActive = false;
@@ -371,29 +376,29 @@ function resetSimulation() {
   updatePointCount();
   updateAnalyzeButton();
   chartLabels.length = 0;
-  chartData.length   = 0;
+  chartData.length = 0;
   pointsChart.update();
 }
 
 const simSpeedRange = document.getElementById("simSpeedRange");
 const simSpeedNumber = document.getElementById("simSpeedNumber");
-simSpeedRange.addEventListener("input", function(e) {
+simSpeedRange.addEventListener("input", function (e) {
   simSpeed = parseFloat(e.target.value);
   simSpeedNumber.value = e.target.value;
 });
-simSpeedNumber.addEventListener("input", function(e) {
+simSpeedNumber.addEventListener("input", function (e) {
   simSpeed = parseFloat(e.target.value);
   simSpeedRange.value = e.target.value;
 });
 
 const pausePlayButton = document.getElementById("pausePlayButton");
-pausePlayButton.addEventListener("click", function() {
+pausePlayButton.addEventListener("click", function () {
   isPaused = !isPaused;
   pausePlayButton.textContent = isPaused ? "Play" : "Pause";
 });
 
 const nextFrameButton = document.getElementById("nextFrameButton");
-nextFrameButton.addEventListener("click", function() {
+nextFrameButton.addEventListener("click", function () {
   if (isPaused) {
     simulateGenerationStep();
     updatePointCount();
@@ -402,7 +407,7 @@ nextFrameButton.addEventListener("click", function() {
 });
 
 const prevFrameButton = document.getElementById("prevFrameButton");
-prevFrameButton.addEventListener("click", function() {
+prevFrameButton.addEventListener("click", function () {
   if (isPaused && generationHistory.length > 1) {
     generationHistory.pop();
     let prevSnapshot = generationHistory[generationHistory.length - 1];
@@ -410,7 +415,7 @@ prevFrameButton.addEventListener("click", function() {
     allCells = JSON.parse(JSON.stringify(prevSnapshot.allCells));
     positions = prevSnapshot.positions.slice();
     colors = prevSnapshot.colors.slice();
-    
+
     geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
     geometry.setDrawRange(0, positions.length / 3);
     geometry.attributes.position.needsUpdate = true;
@@ -422,23 +427,23 @@ prevFrameButton.addEventListener("click", function() {
 
 const maxCellsRange = document.getElementById("maxCellsRange");
 const maxCellsNumber = document.getElementById("maxCellsNumber");
-maxCellsRange.addEventListener("input", function(e) {
+maxCellsRange.addEventListener("input", function (e) {
   maxCells = parseInt(e.target.value);
   maxCellsNumber.value = e.target.value;
 });
-maxCellsNumber.addEventListener("input", function(e) {
+maxCellsNumber.addEventListener("input", function (e) {
   maxCells = parseInt(e.target.value);
   maxCellsRange.value = e.target.value;
 });
 
 const pointSizeRange = document.getElementById("pointSizeRange");
 const pointSizeNumber = document.getElementById("pointSizeNumber");
-pointSizeRange.addEventListener("input", function(e) {
+pointSizeRange.addEventListener("input", function (e) {
   const value = parseFloat(e.target.value);
   pointsMaterial.size = microscopicModeActive ? value * 0.5 : value;
   pointSizeNumber.value = e.target.value;
 });
-pointSizeNumber.addEventListener("input", function(e) {
+pointSizeNumber.addEventListener("input", function (e) {
   const value = parseFloat(e.target.value);
   pointsMaterial.size = microscopicModeActive ? value * 0.5 : value;
   pointSizeRange.value = e.target.value;
@@ -446,23 +451,23 @@ pointSizeNumber.addEventListener("input", function(e) {
 
 const stepSizeRange = document.getElementById("stepSizeRange");
 const stepSizeNumber = document.getElementById("stepSizeNumber");
-stepSizeRange.addEventListener("input", function(e) {
+stepSizeRange.addEventListener("input", function (e) {
   stepSize = parseFloat(e.target.value);
   stepSizeNumber.value = e.target.value;
 });
-stepSizeNumber.addEventListener("input", function(e) {
+stepSizeNumber.addEventListener("input", function (e) {
   stepSize = parseFloat(e.target.value);
   stepSizeRange.value = e.target.value;
 });
 
 const cubeSizeRange = document.getElementById("cubeSizeRange");
 const cubeSizeNumber = document.getElementById("cubeSizeNumber");
-cubeSizeRange.addEventListener("input", function(e) {
+cubeSizeRange.addEventListener("input", function (e) {
   const newCubeSize = parseFloat(e.target.value);
   cubeSizeNumber.value = e.target.value;
   updateCube(newCubeSize);
 });
-cubeSizeNumber.addEventListener("input", function(e) {
+cubeSizeNumber.addEventListener("input", function (e) {
   const newCubeSize = parseFloat(e.target.value);
   cubeSizeRange.value = e.target.value;
   updateCube(newCubeSize);
@@ -470,7 +475,7 @@ cubeSizeNumber.addEventListener("input", function(e) {
 
 const shapeButtons = document.querySelectorAll("#controlPanel button[data-shape]");
 shapeButtons.forEach(button => {
-  button.addEventListener("click", function() {
+  button.addEventListener("click", function () {
     currentShape = this.getAttribute("data-shape");
     if (!microscopicModeActive) {
       pointsMaterial.map = createPointTexture(currentShape);
@@ -497,23 +502,23 @@ function updateInfoPanel() {
   document.getElementById("infoSimSpeed").textContent = simSpeed.toFixed(1) + 'x';
 }
 
-maxCellsRange.addEventListener("input", function(e) {
+maxCellsRange.addEventListener("input", function (e) {
   maxCells = parseInt(e.target.value);
   maxCellsNumber.value = e.target.value;
   updateInfoPanel();
 });
-stepSizeRange.addEventListener("input", function(e) {
+stepSizeRange.addEventListener("input", function (e) {
   stepSize = parseFloat(e.target.value);
   stepSizeNumber.value = e.target.value;
   updateInfoPanel();
 });
-cubeSizeRange.addEventListener("input", function(e) {
+cubeSizeRange.addEventListener("input", function (e) {
   const newCubeSize = parseFloat(e.target.value);
   cubeSizeNumber.value = e.target.value;
   updateCube(newCubeSize);
   updateInfoPanel();
 });
-simSpeedRange.addEventListener("input", function(e) {
+simSpeedRange.addEventListener("input", function (e) {
   simSpeed = parseFloat(e.target.value);
   simSpeedNumber.value = e.target.value;
   updateInfoPanel();
@@ -528,22 +533,22 @@ const hideControlButton = document.getElementById("hideControlButton");
 const showControlButton = document.getElementById("showControlButton");
 const controlPanel = document.getElementById("controlPanel");
 
-hideInfoButton.addEventListener("click", function() {
+hideInfoButton.addEventListener("click", function () {
   infoPanel.classList.add("collapsed");
   showInfoButton.style.display = "block";
 });
 
-showInfoButton.addEventListener("click", function() {
+showInfoButton.addEventListener("click", function () {
   infoPanel.classList.remove("collapsed");
   showInfoButton.style.display = "none";
 });
 
-hideControlButton.addEventListener("click", function() {
+hideControlButton.addEventListener("click", function () {
   controlPanel.classList.add("collapsed");
   showControlButton.style.display = "block";
 });
 
-showControlButton.addEventListener("click", function() {
+showControlButton.addEventListener("click", function () {
   controlPanel.classList.remove("collapsed");
   showControlButton.style.display = "none";
 });
@@ -571,7 +576,7 @@ boxWireframe.visible = axesHelper.visible = cubeToggle.checked;
 cubeToggle.addEventListener("change", (e) => {
   const show = e.target.checked;
   boxWireframe.visible = show;
-  axesHelper.visible   = show;
+  axesHelper.visible = show;
 });
 
 function updatePointCount() {
@@ -582,42 +587,30 @@ function updatePointCount() {
 function updateAnalyzeButton() {
   analyzeButton.disabled = generationHistory.length < 10;
 }
-
 analyzeButton.addEventListener("click", async () => {
-  analysisText.innerHTML = "<p>Analyzing your star…</p>";
+  analysisText.innerHTML = "Analyzing your star…";
+  analysisImage.classList.remove("show");
+  generatedImage.classList.add("hidden");
   analysisModal.classList.remove("hidden");
-
-  const starImages = [
-    "stars/star1.png",
-    "stars/star2.jpg",
-    "stars/star3.jpg",
-    "stars/star4.jpg",
-    "stars/star5.jpg"
-  ];
-  const analysisImage = document.getElementById("analysisStarImage");
-  const randomIndex = Math.floor(Math.random() * starImages.length);
-  analysisImage.src = starImages[randomIndex];
 
   const dataUrl = renderer.domElement.toDataURL("image/png");
   const base64Image = dataUrl.split(",")[1];
 
-  try {
-    const res = await fetch("/analyze-star", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ image: base64Image })
-    });
+  const res = await fetch("/analyze-star", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ image: base64Image })
+  });
 
-    const { reply } = await res.json();
-    analysisText.innerHTML = marked.parse(reply);
-  } catch (err) {
-    console.error(err);
-    analysisText.innerHTML = "<p>⚠️ Something went wrong. Try again later.</p>";
-  }
-  setTimeout(() => {
-    analysisImage.classList.add("show");
-  }, 5000);
+  const { reply, generatedImage: url } = await res.json();
+
+  analysisText.innerHTML = marked.parse(reply);
+
+  const genImgEl = document.getElementById("generatedImage");
+  genImgEl.src = url;
+  genImgEl.classList.remove("hidden");
 });
+
 
 closeModalButton.addEventListener("click", () => {
   analysisModal.classList.add("hidden");
