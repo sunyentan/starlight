@@ -49,7 +49,7 @@ Remember: be vivid, imaginative, and format your response in clear markdown-styl
         }
       ]
     });
-    const reply = chatRes.choices[0].message.content;
+    const reply = chat.choices[0].message.content;
 
     let starType = reply.match(/^\*\*🌟 Star Classification:\*\* (.+)$/m)?.[1] || "mystical star";
     const imgRes = await openai.images.generate({
