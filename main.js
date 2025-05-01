@@ -588,27 +588,48 @@ function updateAnalyzeButton() {
   analyzeButton.disabled = generationHistory.length < 10;
 }
 analyzeButton.addEventListener("click", async () => {
-  analysisText.innerHTML = "Analyzing your star…";
+  analysisText.innerHTML = "<p>Analyzing your star…</p>";
   generatedImage.classList.add("hidden");
   analysisModal.classList.remove("hidden");
 
-  const dataUrl = renderer.domElement.toDataURL("image/png");
+  const dataUrl     = renderer.domElement.toDataURL("image/png");
   const base64Image = dataUrl.split(",")[1];
 
-  const res = await fetch("/analyze-star", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ image: base64Image })
-  });
+  try {
+    const res = await fetch("/analyze-star", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ image: base64Image })
+    });
 
-  const { reply, generatedImage: url } = await res.json();
+    if (!res.ok) {
+      const text = await res.text();
+      throw new Error(`Server returned ${res.status}: ${text}`);
+    }
 
-  analysisText.innerHTML = marked.parse(reply);
+    const data = await res.json();
 
-  const genImgEl = document.getElementById("generatedImage");
-  genImgEl.src = url;
-  genImgEl.classList.remove("hidden");
+    if (data.error) {
+      throw new Error(data.error);
+    }
+
+    if (data.reply) {
+      analysisText.innerHTML = marked.parse(data.reply);
+    } else {
+      analysisText.innerHTML = "<p>⚠️ No analysis returned.</p>";
+    }
+
+    if (data.generatedImage) {
+      generatedImage.src = data.generatedImage;
+      generatedImage.classList.remove("hidden");
+    }
+
+  } catch (err) {
+    console.error("Analysis error:", err);
+    analysisText.innerHTML = `<p>⚠️ ${err.message}</p>`;
+  }
 });
+
 
 
 closeModalButton.addEventListener("click", () => {
